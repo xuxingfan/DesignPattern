@@ -1,5 +1,5 @@
 ### 问题的提出
-在类的应用中，有些类是容易创建对象的，直接调用构造方法即可，例如Student obj=new Student("1001","张三",20); Circle obj1=new Circle(10.0f)这两个类的特点是成员变量是基本类型或者是字符串，或者是封装类。但是有些累是不易直接创建对象的，成员变量是自定义类型，代码如下：
+在类的应用中，有些类是容易创建对象的，直接调用构造方法即可，例如Student obj=new Student("1001","张三",20); Circle obj1=new Circle(10.0f)这两个类的特点是成员变量是基本类型或者是字符串，或者是封装类。但是有些l类是不易直接创建对象的，成员变量是自定义类型，代码如下：
 
 ```java
 public class Product{
@@ -9,7 +9,7 @@ public class Product{
 }
 
 ```
-可以看出，Product有Unit1、Unit2、Unit3三个单元组成，产生Product对象不能简单地有Product obj=new Product(Unit1,Unit2,Unit3)生成，必须先产生具体的对象u1、u2、u3才能获得Product对象，简单的实现如下：
+可以看出，Product有Unit1、Unit2、Unit3三个单元组成，产生Product对象不能简单地由Product obj=new Product(Unit1,Unit2,Unit3)生成，必须先产生具体的对象u1、u2、u3才能获得Product对象，简单的实现如下：
 
 ```java
 public class Product{
@@ -44,7 +44,7 @@ public class Test{
 }
 ```
 
-上面的代码虽然解决复制对象的创建问题，层次清晰，但本方法仅解决了一类Product对象的创建问题，如果有多类Product对象，那么代码就会变成如下：
+上面的代码虽然解决复杂对象的创建问题，层次清晰，但本方法仅解决了一类Product对象的创建问题，如果有多类Product对象，那么代码就会变成如下：
 
 ```java
 public class Product{
