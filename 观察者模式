@@ -1,0 +1,236 @@
+## 问题的提出
+在实际生活中，经常会遇到多种对象关注同一个特定对象的属性的变化情况。例如，生活中温度记录器，当温度发生变化时，需要完成以下操作：
+1. 记录温度日志
+1. 显示温度变化曲线
+1. 当温度达到阈值时发出警报声
+
+可能会写下如下片段的代码
+
+```java
+while(温度变化){
+    记录温度日志;
+    重新绘制温度变化曲线;
+    if(温度>阈值){
+        发出警报声;
+    }
+    
+}
+
+```
+以上方法把所有操作都放在一起，当需求发生变化，例如：增加新的温度检测功能（当温度<最小阈值——报警），或者删除其中一项操作时，我们都得修改代码。观察者模式可以很好的帮我们解决这个问题。
+
+观察者模式适合解决多个对象监测（跟踪）同一个对象变化的结构问题
+
+
+```JAVA
+/**
+*观察者接口
+**/
+public interface IObserver{
+    public void refresh(String data);
+}
+
+/**
+*主题接口
+**/
+public interface ISubject{
+    public void register(IObject obs);//注册观察者
+    public void unregister(IObject obs);//撤销注册者
+    public notifyObservers();//通知所有的注册则
+}
+
+/**
+*主题实现
+**/
+public class Subject implements ISubject{
+    private Vector<IObserver>vec=new Vertor();
+    private String data;
+    public String getData(){
+        return this.data;
+    }
+    public void setData(String data){
+        this.data=data;
+    }
+    public void register(IObject obs){
+        vec.add(obs);
+    }
+    public void unregister(IObject obs){
+        if(vec.contains(obs)){
+          vec.remove(obs);  
+        }
+    }
+    public notifyObservers(){
+        for(IObserver obs:vec){
+            obs.refresh(data);
+        }
+    }
+}
+```
+其中一个观察者的实现
+
+```java
+public class Observer implements IObserver{
+    public void refresh(String data){
+        System.out.print("I have received the data"+data);
+    }
+}
+```
+测试类
+
+```
+public class Test{
+    public void main(String []args){
+       IObserver obs=new Observer();
+       ISubject subject=new Subject();
+       subject.register(obs);
+       subject.setData("hello");
+       subject.notifyObserver();
+    }
+}
+```
+
+以上代码就实现了一个简单的观察者模式
+
+---
+# 扩展
+增加抽象类AbstractSubject
+假设有多个主题类，每个主题都要重写register,unregister,notifyObservers方法，又假设这三个方法的代码刚好相同，那么每个主题类的代码就显得重复了，用中间层类来解决代码重复问题就是一个很好的方法，代码如下：
+
+```java
+public interface ISubject{
+    public void register(IObserver obs);
+    public void unregister(IObserver obs);
+    public void notifyObservers();
+}
+
+public interface IObserver{
+    public void refresh(ISubject obj);//采用拉的方式
+}
+
+/**
+*
+*增加抽象层类AbstractSubject
+**/
+public class AbstractSubject implements ISubject{
+    Vector<IObserver>vec=new Vector();
+    public void register(IObserver obs){
+        vec.add(obs);
+    }
+    public void unregister(IObserver obs){
+        if(vec.contains(obs)){
+            vec.remove(obs);
+        }
+    }
+    public void notifyObservers(){
+        for(IObserver obs:vec){
+            obs.refresh(this);
+        }
+    }
+}
+
+/**
+*派生主题类
+**/
+public class Subject extends AbstractSubject{
+    private String data;
+    public String getData(){
+        return this.data;
+    }
+    public String setData(String data){
+        this.data=data;
+    }
+}
+
+public class Observer implements IObserver{
+    public void refresh(obj){
+        Subject subject=(Subject)obj;
+        System.out.println("I have received the data:"+subject.getData());
+    }
+}
+```
+
+#加上反射技术
+将观察者类信息封装在Xml配置文件中，从而利用反射技术可以动态加载观察者对象，配置文件采用(键-值)配对形式，值对应的是具体的观察者的类名
+
+```xml
+<properties>
+    <comment>Observer</comment>
+    <entry key="observer1">Observer1</entry>
+    <entry key="observer2">Observer2</entry>
+</properties>
+```
+java代码实现
+
+```
+public interface IObserver{
+    public void refresh(String data);
+}
+
+public interface ISubject{
+    public void register(String xmlpath);
+    public void unregister(IObserver obs);
+    public void notifyObservers();
+}
+
+public class Subject implements ISubject(){
+    //其他代码同上..
+    Vector<IObserver>vec=new Vector();
+    public void register(String xmlpath){
+        String prefix="observer";
+        String observerClassName=null;
+        Properties p=new Properties();
+        try{
+        FileInputStream in=new FileInputStream(xmlpath);
+        p.load(in);
+        int n=1;
+        while(observerClassName=p.getProperty(prefix+n)!=null){
+           Construct c=Class.forName(observerClassName).getConStruct();
+           IObserver obs=(IObserver)Class.forName(observerClassName).newInstance();
+           vec.add(obs);
+           n++;
+        }
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+//观察类者代码实现同上（两个观察者）
+```
+
+# JDK中的观察者设计模式
+JDK的java.util包提供系统的主题类Observable及观察者接口Observer
+
+利用JDK中的Observer,Observable完成观察者模式
+
+```
+public class Subject extends java.util.Observable{
+    String data;
+    pulbic String getData(){
+        return this.data;
+    }
+    public void setData(String data){
+        this.data=data;
+        setChanged();//更新数据时设置标志
+        notifyObservers(null);//通知观察者
+    }
+}
+
+//具体的观察类
+public class OneObserver implements java.util.Observer{
+    public void update(Observable arg0,Object arg1){ 
+        Subject subject=(Subject)arg0;
+        System.out.println("The data is:"+subject.getData());
+    }
+}
+
+//测试类
+public class Test{
+    public static void main(String []args){
+        Observe obj=new OneObserver();
+        Subject s=new Subject();
+        s.addObserver(obj);
+        s.setData("hello");
+    }
+}
+```
