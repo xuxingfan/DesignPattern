@@ -7,4 +7,5 @@ JAVA设计模式
 3. [工厂模式](http://xuxingfan.github.io/DesignPattern/工厂模式)
 4. [生成器or建造者模式](http://xuxingfan.github.io/DesignPattern/生成器or建造者模式)
 5. [观察者模式](http://xuxingfan.github.io/DesignPattern/观察者模式)
+6. [观察者模式](http://xuxingfan.github.io/DesignPattern/桥接模式)
 
