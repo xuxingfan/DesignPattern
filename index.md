@@ -8,4 +8,5 @@ JAVA设计模式
 4. [生成器or建造者模式](http://xuxingfan.github.io/DesignPattern/生成器or建造者模式)
 5. [观察者模式](http://xuxingfan.github.io/DesignPattern/观察者模式)
 6. [桥接模式](http://xuxingfan.github.io/DesignPattern/桥接模式)
+7. [桥接模式](http://xuxingfan.github.io/DesignPattern/代理模式)
 
