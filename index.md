@@ -10,4 +10,5 @@ JAVA设计模式
 6. [桥接模式](http://xuxingfan.github.io/DesignPattern/桥接模式)
 7. [代理模式](http://xuxingfan.github.io/DesignPattern/代理模式)
 8. [状态模式](http://xuxingfan.github.io/DesignPattern/状态模式)
+9. [访问者模式](http://xuxingfan.github.io/DesignPattern/访问者模式)
 
