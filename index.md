@@ -12,4 +12,6 @@ JAVA设计模式
 8. [状态模式](http://xuxingfan.github.io/DesignPattern/状态模式)
 9. [访问者模式](http://xuxingfan.github.io/DesignPattern/访问者模式)
 10. [命令模式](http://xuxingfan.github.io/DesignPattern/命令模式)
+11. [装饰器模式](http://xuxingfan.github.io/DesignPattern/装饰器模式)
+12. [组合模式](http://xuxingfan.github.io/DesignPattern/组合模式)
 
